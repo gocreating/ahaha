@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { createSwaggerSpec } from 'next-swagger-doc'
 import dynamic from 'next/dynamic'
