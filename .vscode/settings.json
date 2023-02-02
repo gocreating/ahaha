@@ -1,0 +1,12 @@
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": true
+  },
+  "editor.stickyScroll.enabled": true,
+  "[helm]": {
+    // `kubernetes` extension is required for this configuration
+    "editor.formatOnSave": false
+  }
+}
