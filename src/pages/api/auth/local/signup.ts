@@ -1,4 +1,5 @@
 import sequelize from '@/db/sequelize'
+import sendgrid from '@/notification/sendgrid'
 import bcrypt from 'bcrypt'
 import { NextApiRequest, NextApiResponse } from 'next'
 import { EndUser } from '../../../../db/models'
@@ -29,7 +30,7 @@ export default async function handler(
     return
   }
   const hashedPassword = await bcrypt.hash(req.body.password, 10)
-  await sequelize.transaction(async (t) => {
+  const user = await sequelize.transaction(async (t) => {
     const user = await EndUser.create(
       {
         emailAddress: req.body.emailAddress,
@@ -40,6 +41,15 @@ export default async function handler(
     )
     return user
   })
+  const _sendgridRes = await sendgrid.send({
+    to: req.body.emailAddress,
+    from: 'no-reply@lation.app',
+    subject: 'Ahaha Email Verification',
+    html: `<a href="${process.env.BASE_URL}/api/auth/local/verify?reference=${
+      (user as any).reference
+    }">Verify this email</a>`,
+  })
+
   //   setCookie(res, 'ACCESS-TOKEN', 'testtest!', {
   //     path: '/',
   //     maxAge: 86400 * 30,

@@ -16,6 +16,9 @@ export default function PrimaryNav() {
     <>
       <ul>
         <li>
+          <Link href="/api-doc">Swagger Doc</Link>
+        </li>
+        <li>
           <Link href="/">Dashboard</Link>
         </li>
         <li>
