@@ -6,7 +6,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 /**
  * @swagger
- * /api/local/signup:
+ * /api/auth/local/signup:
  *   post:
  *     tags:
  *       - auth

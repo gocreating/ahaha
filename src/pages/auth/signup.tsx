@@ -24,6 +24,7 @@ export default function Signup() {
 
   return (
     <PageLayout>
+      <h1>Signup</h1>
       <form onSubmit={signupForm.handleSubmit(onSignupFormSubmit)}>
         <label>Email:</label>
         <input {...signupForm.register('emailAddress', { required: true })} />

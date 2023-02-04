@@ -14,7 +14,7 @@ export default function PrimaryNav() {
           <Link href="/auth/signup">Signup</Link>
         </li>
         <li>
-          <Link href="/auth/signup">Signin</Link>
+          <Link href="/auth/signin">Signin</Link>
         </li>
       </ul>
       <hr />

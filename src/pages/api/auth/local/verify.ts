@@ -3,7 +3,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
 
 /**
  * @swagger
- * /api/local/verify:
+ * /api/auth/local/verify:
  *   get:
  *     tags:
  *       - auth
