@@ -1,6 +1,7 @@
 import { EndUser, EndUserSession } from '@/db/models'
 import cookie from 'cookie'
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
+import { SESSION_COOKIE_KEY } from './constant'
 
 export const withMethodRequired =
   (method: string) =>
@@ -17,7 +18,7 @@ export const withEndUserSession =
   (apiRoute: NextApiHandler) =>
   async (req: NextApiRequest, res: NextApiResponse) => {
     const cookies = cookie.parse(req.headers.cookie || '')
-    const accessToken = cookies['ACCESS-TOKEN']
+    const accessToken = cookies[SESSION_COOKIE_KEY]
     if (!accessToken) {
       res.status(401).json({ error: 'not authenticated' })
       return

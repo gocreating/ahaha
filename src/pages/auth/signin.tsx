@@ -1,4 +1,5 @@
 import PageLayout from '@/components/layouts/PageLayout'
+import { useEndUser } from '@/utils/auth'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -6,6 +7,7 @@ import { FieldValues, useForm } from 'react-hook-form'
 export default function Signin() {
   const router = useRouter()
   const signinForm = useForm()
+  const { sync } = useEndUser()
   const onSigninFormSubmit = async (data: FieldValues) => {
     const res = await fetch('/api/auth/local/signin', {
       method: 'POST',
@@ -18,6 +20,7 @@ export default function Signin() {
       const { error } = await res.json()
       alert(error)
     } else {
+      await sync()
       router.push('/')
     }
   }

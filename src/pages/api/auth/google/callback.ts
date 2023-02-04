@@ -1,4 +1,6 @@
-import { createGoogleOAuthUserIfNotExist } from '@/utils/endUser'
+import { SESSION_COOKIE_KEY } from '@/utils/constant'
+import { setCookie } from '@/utils/cookie'
+import { createGoogleOAuthUserIfNotExist, signinEndUser } from '@/utils/endUser'
 import { withMethodRequired } from '@/utils/route'
 import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
@@ -66,7 +68,13 @@ export default withMethodRequired('GET')(
         })
       },
       async function (_err, decodedData) {
-        await createGoogleOAuthUserIfNotExist(decodedData)
+        const endUser = await createGoogleOAuthUserIfNotExist(decodedData)
+        const endUserSession = await signinEndUser(endUser)
+        setCookie(res, SESSION_COOKIE_KEY, (endUserSession as any).reference, {
+          path: '/',
+          httpOnly: true,
+          maxAge: 60 * 60 * 24 * 7, // 1 week
+        })
         res.redirect('/')
       }
     )

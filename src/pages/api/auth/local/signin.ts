@@ -1,4 +1,5 @@
 import { EndUser } from '@/db/models'
+import { SESSION_COOKIE_KEY } from '@/utils/constant'
 import { setCookie } from '@/utils/cookie'
 import { signinEndUser } from '@/utils/endUser'
 import { withMethodRequired } from '@/utils/route'
@@ -32,7 +33,7 @@ export default withMethodRequired('POST')(
       res.status(400).json({ error: 'invalid account' })
     }
     const endUserSession = await signinEndUser(endUser)
-    setCookie(res, 'ACCESS-TOKEN', (endUserSession as any).reference, {
+    setCookie(res, SESSION_COOKIE_KEY, (endUserSession as any).reference, {
       path: '/',
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7, // 1 week

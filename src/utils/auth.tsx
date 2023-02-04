@@ -4,29 +4,37 @@ const EndUserContext = React.createContext({
   isLoading: false,
   error: null,
   endUser: null,
+  sync: async () => {},
 })
 
 export const EndUserProvider = (props: any) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const [endUser, setEndUser] = useState(null)
-  useEffect(() => {
+
+  const fetchEndUser = async () => {
     setIsLoading(true)
-    const fetchEndUser = async () => {
-      const res = await fetch('/api/end_users/me')
-      if (!res.ok) {
-        const { error } = await res.json()
-        setError(error)
-      } else {
-        const { data } = await res.json()
-        setEndUser(data)
-      }
-      setIsLoading(false)
+    const res = await fetch('/api/end_users/me')
+    if (!res.ok) {
+      const { error } = await res.json()
+      setError(error)
+      setEndUser(null)
+    } else {
+      const { data } = await res.json()
+      setError(null)
+      setEndUser(data)
     }
+    setIsLoading(false)
+  }
+
+  useEffect(() => {
     fetchEndUser()
   }, [])
   return (
-    <EndUserContext.Provider value={{ isLoading, error, endUser }} {...props} />
+    <EndUserContext.Provider
+      value={{ isLoading, error, endUser, sync: fetchEndUser }}
+      {...props}
+    />
   )
 }
 
@@ -36,5 +44,6 @@ export const useEndUser = () => {
     isLoading: endUserContext.isLoading,
     error: endUserContext.error,
     endUser: endUserContext.endUser,
+    sync: endUserContext.sync,
   }
 }

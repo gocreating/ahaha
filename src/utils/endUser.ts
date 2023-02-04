@@ -53,7 +53,7 @@ export const createGoogleOAuthUserIfNotExist = async (profile: any) => {
     },
     include: [GoogleOAuthUser],
   })
-  await sequelize.transaction(async (t) => {
+  const endUser = await sequelize.transaction(async (t) => {
     let endUser
     if (endUsers.length > 0) {
       endUser = endUsers[0]
@@ -69,6 +69,7 @@ export const createGoogleOAuthUserIfNotExist = async (profile: any) => {
     }
     const googleOauthUser = await GoogleOAuthUser.create(
       {
+        endUserReference: (endUser as any).reference,
         profile,
       },
       { transaction: t }
@@ -76,4 +77,5 @@ export const createGoogleOAuthUserIfNotExist = async (profile: any) => {
     await (endUser as any).addGoogleOAuthUser(googleOauthUser)
     return endUser
   })
+  return endUser
 }
