@@ -1,5 +1,5 @@
+import sequelize from '@/db/sequelize'
 import { DataTypes } from 'sequelize'
-import sequelize from './sequelize'
 
 export const EndUser = sequelize.define(
   'EndUser',
@@ -35,3 +35,33 @@ export const EndUser = sequelize.define(
     timestamps: false,
   }
 )
+
+export const GoogleOAuthUser = sequelize.define(
+  'GoogleOAuthUser',
+  {
+    reference: {
+      field: 'reference',
+      type: DataTypes.UUIDV4,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    profile: {
+      field: 'profile',
+      type: DataTypes.JSONB,
+    },
+    endUserReference: {
+      field: 'end_user_reference',
+      type: DataTypes.UUIDV4,
+    },
+  },
+  {
+    freezeTableName: true,
+    tableName: 'google_oauth_user',
+    timestamps: false,
+  }
+)
+
+EndUser.hasMany(GoogleOAuthUser, {
+  foreignKey: 'endUserReference',
+  foreignKeyConstraint: true,
+})

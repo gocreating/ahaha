@@ -1,3 +1,4 @@
+import { createGoogleOAuthUserIfNotExist } from '@/utils/endUser'
 import jwt from 'jsonwebtoken'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -65,27 +66,8 @@ export default async function handler(
         callback(null, signingKey)
       })
     },
-    function (_err, decodedData) {
-      /*
-      Sample decodedData
-      {
-        iss: 'https://accounts.google.com',
-        azp: '1069250879918-5j8sqh8in0eu15gnue9qsk6fe7p8fqn7.apps.googleusercontent.com',
-        aud: '1069250879918-5j8sqh8in0eu15gnue9qsk6fe7p8fqn7.apps.googleusercontent.com',
-        sub: '104424308010635546950',
-        email: 'gocreating@gmail.com',
-        email_verified: true,
-        at_hash: '1lM7wxiL2dV14dNRpXpBOw',
-        name: 'CP Weng',
-        picture: 'https://lh3.googleusercontent.com/a/AEdFTp4G78tdkE9KVZbtGuRFBhc-bOw7owxGmwWn-MPU7Q=s96-c',
-        given_name: 'CP',
-        family_name: 'Weng',
-        locale: 'zh-TW',
-        iat: 1675503976,
-        exp: 1675507576
-      }
-      */
-      console.log('decodedData', decodedData)
+    async function (_err, decodedData) {
+      await createGoogleOAuthUserIfNotExist(decodedData)
       res.redirect('/')
     }
   )

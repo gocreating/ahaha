@@ -1,5 +1,5 @@
+import { EndUser } from '@/db/models'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { EndUser } from '../../../../db/models'
 
 /**
  * @swagger

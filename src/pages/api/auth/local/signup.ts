@@ -1,8 +1,8 @@
+import { EndUser } from '@/db/models'
 import sequelize from '@/db/sequelize'
 import sendgrid from '@/notification/sendgrid'
 import bcrypt from 'bcrypt'
 import { NextApiRequest, NextApiResponse } from 'next'
-import { EndUser } from '../../../../db/models'
 
 /**
  * @swagger

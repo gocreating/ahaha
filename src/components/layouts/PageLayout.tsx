@@ -1,6 +1,6 @@
+import PrimaryNav from '@/components/navigations/PrimaryNav'
 import Head from 'next/head'
 import React from 'react'
-import PrimaryNav from '../navigations/PrimaryNav'
 
 export default function PageLayout({
   children,
