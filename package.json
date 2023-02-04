@@ -16,6 +16,7 @@
     "@types/cookie": "^0.5.1",
     "@types/jsonwebtoken": "^9.0.1",
     "@types/node": "18.11.18",
+    "@types/pg": "^8.6.6",
     "@types/react": "18.0.27",
     "@types/react-dom": "18.0.10",
     "bcrypt": "^5.1.0",

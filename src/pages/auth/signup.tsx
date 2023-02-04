@@ -14,7 +14,10 @@ export default function Signup() {
       },
       body: JSON.stringify(data),
     })
-    if (res.ok) {
+    if (!res.ok) {
+      const { error } = await res.json()
+      alert(error)
+    } else {
       router.push('/')
     }
   }
