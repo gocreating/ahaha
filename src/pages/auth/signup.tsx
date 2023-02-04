@@ -1,4 +1,5 @@
 import PageLayout from '@/components/layouts/PageLayout'
+import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FieldValues, useForm } from 'react-hook-form'
 
@@ -33,6 +34,7 @@ export default function Signup() {
         <br />
         <input type="submit" value="Signup" />
       </form>
+      <Link href="/api/auth/google/authorize">Google Signup</Link>
     </PageLayout>
   )
 }
