@@ -7,6 +7,9 @@ export default function PrimaryNav() {
     <>
       <ul>
         <li>
+          <Link href="/">Landing</Link>
+        </li>
+        <li>
           <Link href="/api-doc">Swagger Doc</Link>
         </li>
         {!endUser && (
@@ -21,7 +24,7 @@ export default function PrimaryNav() {
         )}
         {endUser && (
           <li>
-            <Link href="/">Dashboard</Link>
+            <Link href="/dashboard">Dashboard</Link>
           </li>
         )}
         {endUser && (

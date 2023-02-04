@@ -1,5 +1,5 @@
-import AuthPageLayout from '@/components/layouts/AuthPageLayout'
+import PageLayout from '@/components/layouts/PageLayout'
 
-export default function Dashboard() {
-  return <AuthPageLayout>Dashboard</AuthPageLayout>
+export default function Landing() {
+  return <PageLayout>Welcome Ahaha!</PageLayout>
 }

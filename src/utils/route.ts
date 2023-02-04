@@ -31,6 +31,7 @@ export const withEndUserSession =
         {
           model: EndUser,
           as: 'endUser',
+          attributes: ['name'],
         },
       ],
     })

@@ -8,6 +8,10 @@ export default function AuthPageLayout({
 }: {
   children: React.ReactNode
 }) {
-  const { endUser } = useEndUser()
-  return <PageLayout {...rest}>{endUser ? children : 'Forbidden'}</PageLayout>
+  const { isLoading, endUser } = useEndUser()
+  return (
+    <PageLayout {...rest}>
+      {isLoading ? <div>Loading...</div> : endUser ? children : 'Forbidden'}
+    </PageLayout>
+  )
 }
