@@ -17,6 +17,7 @@ export default withMethodRequired('GET')(
       httpOnly: true,
       maxAge: 0,
     })
+    res.setHeader('Cache-Control', 'no-store')
     res.status(200).json({})
   }
 )
