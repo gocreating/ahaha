@@ -1,21 +1,34 @@
+import { useEndUser } from '@/utils/auth'
 import Link from 'next/link'
 
 export default function PrimaryNav() {
+  const { endUser } = useEndUser()
   return (
     <>
       <ul>
         <li>
           <Link href="/api-doc">Swagger Doc</Link>
         </li>
-        <li>
-          <Link href="/">Dashboard</Link>
-        </li>
-        <li>
-          <Link href="/auth/signup">Signup</Link>
-        </li>
-        <li>
-          <Link href="/auth/signin">Signin</Link>
-        </li>
+        {!endUser && (
+          <li>
+            <Link href="/auth/signup">Signup</Link>
+          </li>
+        )}
+        {!endUser && (
+          <li>
+            <Link href="/auth/signin">Signin</Link>
+          </li>
+        )}
+        {endUser && (
+          <li>
+            <Link href="/">Dashboard</Link>
+          </li>
+        )}
+        {endUser && (
+          <li>
+            <Link href="/auth/logout">Logout</Link>
+          </li>
+        )}
       </ul>
       <hr />
     </>

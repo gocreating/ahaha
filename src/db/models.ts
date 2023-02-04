@@ -98,6 +98,11 @@ EndUser.hasMany(EndUserSession, {
   foreignKey: 'endUserReference',
   foreignKeyConstraint: true,
 })
+EndUserSession.belongsTo(EndUser, {
+  foreignKey: 'endUserReference',
+  as: 'endUser',
+})
+
 EndUser.hasMany(GoogleOAuthUser, {
   foreignKey: 'endUserReference',
   foreignKeyConstraint: true,

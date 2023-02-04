@@ -1,5 +1,5 @@
-import PageLayout from '@/components/layouts/PageLayout'
+import AuthPageLayout from '@/components/layouts/AuthPageLayout'
 
-export default function Home() {
-  return <PageLayout>Dashboard</PageLayout>
+export default function Dashboard() {
+  return <AuthPageLayout>Dashboard</AuthPageLayout>
 }
