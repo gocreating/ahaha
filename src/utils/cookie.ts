@@ -4,15 +4,11 @@ import { NextApiResponse } from 'next'
 export const setCookie = (
   res: NextApiResponse,
   name: string,
-  value: unknown,
+  value: string,
   options: CookieSerializeOptions = {}
 ) => {
-  const stringValue =
-    typeof value === 'object' ? 'j:' + JSON.stringify(value) : String(value)
-
   if (typeof options.maxAge === 'number') {
     options.expires = new Date(Date.now() + options.maxAge * 1000)
   }
-
-  res.setHeader('Set-Cookie', serialize(name, stringValue, options))
+  res.setHeader('Set-Cookie', serialize(name, value, options))
 }

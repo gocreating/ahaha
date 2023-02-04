@@ -1,5 +1,30 @@
-import { EndUser, GoogleOAuthUser } from '@/db/models'
+import { EndUser, EndUserSession, GoogleOAuthUser } from '@/db/models'
 import sequelize from '@/db/sequelize'
+
+export const signinEndUser = async (endUser: any) => {
+  const endUserSessions = await EndUserSession.findAll({
+    where: {
+      endUserReference: endUser.reference,
+      isActive: true,
+    },
+  })
+  endUserSessions.forEach(async (endUserSession: any) => {
+    endUserSession.isActive = false
+    await endUser.save()
+  })
+  const endUserSession = await sequelize.transaction(async (t) => {
+    const endUserSession = await EndUserSession.create(
+      {
+        endUserReference: endUser.reference,
+        createTime: new Date().toISOString(),
+        isActive: true,
+      },
+      { transaction: t }
+    )
+    return endUserSession
+  })
+  return endUserSession
+}
 
 /*
 Sample decodedData
