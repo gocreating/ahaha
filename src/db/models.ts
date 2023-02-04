@@ -94,6 +94,32 @@ export const GoogleOAuthUser = sequelize.define(
   }
 )
 
+export const FacebookOAuthUser = sequelize.define(
+  'FacebookOAuthUser',
+  {
+    reference: {
+      field: 'reference',
+      type: DataTypes.UUIDV4,
+      defaultValue: DataTypes.UUIDV4,
+      primaryKey: true,
+    },
+    profile: {
+      field: 'profile',
+      type: DataTypes.JSONB,
+    },
+    endUserReference: {
+      field: 'end_user_reference',
+      type: DataTypes.UUIDV4,
+      allowNull: false,
+    },
+  },
+  {
+    freezeTableName: true,
+    tableName: 'facebook_oauth_user',
+    timestamps: false,
+  }
+)
+
 EndUser.hasMany(EndUserSession, {
   foreignKey: 'endUserReference',
   foreignKeyConstraint: true,
@@ -104,6 +130,10 @@ EndUserSession.belongsTo(EndUser, {
 })
 
 EndUser.hasMany(GoogleOAuthUser, {
+  foreignKey: 'endUserReference',
+  foreignKeyConstraint: true,
+})
+EndUser.hasMany(FacebookOAuthUser, {
   foreignKey: 'endUserReference',
   foreignKeyConstraint: true,
 })

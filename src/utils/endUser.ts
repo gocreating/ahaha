@@ -1,4 +1,9 @@
-import { EndUser, EndUserSession, GoogleOAuthUser } from '@/db/models'
+import {
+  EndUser,
+  EndUserSession,
+  FacebookOAuthUser,
+  GoogleOAuthUser,
+} from '@/db/models'
 import sequelize from '@/db/sequelize'
 
 export const signinEndUser = async (endUser: any) => {
@@ -75,6 +80,61 @@ export const createGoogleOAuthUserIfNotExist = async (profile: any) => {
       { transaction: t }
     )
     await (endUser as any).addGoogleOAuthUser(googleOauthUser)
+    return endUser
+  })
+  return endUser
+}
+
+/*
+Sample profile
+{
+  id: '5957827807637859',
+  first_name: '治平',
+  last_name: '翁',
+  name: '翁治平',
+  name_format: '{last}{first}',
+  picture: {
+    data: {
+      height: 50,
+      is_silhouette: false,
+      url: 'https://platform-lookaside.fbsbx.com/platform/profilepic/?asid=5957827807637859&height=50&width=50&ext=1678123691&hash=AeSbbh9T5o2dCVRuv4E',
+      width: 50
+    }
+  },
+  short_name: '翁治平',
+  email: 'gocreating@gmail.com'
+}
+*/
+export const createFacebookOAuthUserIfNotExist = async (profile: any) => {
+  const endUsers = await EndUser.findAll({
+    where: {
+      emailAddress: profile.email,
+      isEmailAddressVerified: true,
+    },
+    include: [FacebookOAuthUser],
+  })
+  const endUser = await sequelize.transaction(async (t) => {
+    let endUser
+    if (endUsers.length > 0) {
+      endUser = endUsers[0]
+    } else {
+      endUser = await EndUser.create(
+        {
+          emailAddress: profile.email,
+          isEmailAddressVerified: true,
+          name: profile.name,
+        },
+        { transaction: t }
+      )
+    }
+    const facebookOauthUser = await FacebookOAuthUser.create(
+      {
+        endUserReference: (endUser as any).reference,
+        profile,
+      },
+      { transaction: t }
+    )
+    await (endUser as any).addFacebookOAuthUser(facebookOauthUser)
     return endUser
   })
   return endUser

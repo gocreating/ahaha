@@ -38,7 +38,14 @@ export default function Signup() {
         <br />
         <input type="submit" value="Signup" />
       </form>
-      <Link href="/api/auth/google/authorize">Google Signup</Link>
+      <ul>
+        <li>
+          <Link href="/api/auth/google/authorize">Google Signup</Link>
+        </li>
+        <li>
+          <Link href="/api/auth/facebook/authorize">Facebook Signup</Link>
+        </li>
+      </ul>
     </PageLayout>
   )
 }
