@@ -106,6 +106,8 @@ export default withMethodRequired('GET')(
       path: '/',
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7, // 1 week
+      secure: true,
+      sameSite: 'none',
     })
     res.redirect('/dashboard')
   }

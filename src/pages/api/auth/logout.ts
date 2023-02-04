@@ -10,12 +10,14 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *     tags:
  *       - auth
  */
-export default withMethodRequired('GET')(
+export default withMethodRequired('POST')(
   async (_req: NextApiRequest, res: NextApiResponse) => {
     setCookie(res, SESSION_COOKIE_KEY, '', {
       path: '/',
       httpOnly: true,
       maxAge: 0,
+      secure: true,
+      sameSite: 'none',
     })
     res.setHeader('Cache-Control', 'no-store')
     res.status(200).json({})
