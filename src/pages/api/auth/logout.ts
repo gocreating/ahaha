@@ -19,7 +19,6 @@ export default withMethodRequired('POST')(
       secure: true,
       sameSite: 'none',
     })
-    res.setHeader('Cache-Control', 'no-store')
     res.status(200).json({})
   }
 )

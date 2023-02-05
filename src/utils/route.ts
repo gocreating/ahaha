@@ -4,10 +4,13 @@ import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
 import { SESSION_COOKIE_KEY } from './constant'
 
 export const withMethodRequired =
-  (method: string) =>
+  (method: string | string[]) =>
   (apiRoute: NextApiHandler) =>
   async (req: NextApiRequest, res: NextApiResponse) => {
-    if (req.method !== method) {
+    if (
+      (typeof method === 'string' && req.method !== method) ||
+      (Array.isArray(method) && !method.includes(req.method as string))
+    ) {
       res.status(405).json({ error: 'method not allowed' })
       return
     }
@@ -31,7 +34,7 @@ export const withEndUserSession =
         {
           model: EndUser,
           as: 'endUser',
-          attributes: ['name'],
+          attributes: ['reference', 'name', 'emailAddress'],
         },
       ],
     })

@@ -7,10 +7,10 @@ export default function PrimaryNav() {
     <>
       <ul>
         <li>
-          <Link href="/">Landing</Link>
+          <Link href="/api-doc">Swagger Doc</Link>
         </li>
         <li>
-          <Link href="/api-doc">Swagger Doc</Link>
+          <Link href="/">Landing</Link>
         </li>
         {!endUser && (
           <li>
@@ -20,6 +20,11 @@ export default function PrimaryNav() {
         {!endUser && (
           <li>
             <Link href="/auth/signin">Signin</Link>
+          </li>
+        )}
+        {endUser && (
+          <li>
+            <Link href="/profile">Profile</Link>
           </li>
         )}
         {endUser && (
