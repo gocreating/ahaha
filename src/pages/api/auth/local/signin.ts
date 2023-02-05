@@ -20,18 +20,22 @@ export default withMethodRequired('POST')(
       res.status(400).json({ error: 'invalid password format' })
       return
     }
-    const endUser = await EndUser.findOne({
+    const endUser = (await EndUser.findOne({
       where: {
         emailAddress: req.body.emailAddress,
       },
-    })
+    })) as any
     if (!endUser) {
+      res.status(400).json({ error: 'invalid account' })
+      return
+    }
+    if (!endUser.hashedPassword) {
       res.status(400).json({ error: 'invalid account' })
       return
     }
     const isMatch = await bcrypt.compare(
       req.body.password,
-      (endUser as any).hashedPassword
+      endUser.hashedPassword
     )
     if (!isMatch) {
       res.status(400).json({ error: 'invalid account' })
