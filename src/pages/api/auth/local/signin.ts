@@ -45,11 +45,11 @@ export default withMethodRequired('POST')(
       res.status(400).json({ error: 'invalid password format' })
       return
     }
-    const endUser = (await EndUser.findOne({
+    const endUser = await EndUser.findOne({
       where: {
         emailAddress: req.body.emailAddress,
       },
-    })) as any
+    })
     if (!endUser) {
       res.status(400).json({ error: 'invalid account' })
       return
@@ -66,7 +66,7 @@ export default withMethodRequired('POST')(
       res.status(400).json({ error: 'invalid account' })
     }
     const endUserSession = await signinEndUser(endUser)
-    setCookie(res, SESSION_COOKIE_KEY, endUserSession.reference, {
+    setCookie(res, SESSION_COOKIE_KEY, endUserSession.reference!, {
       path: '/',
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7, // 1 week

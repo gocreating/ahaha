@@ -51,10 +51,14 @@ export default withMethodRequired('PATCH')(
         .json({ error: 'new password is the same as old password' })
       return
     }
-    const endUser = (await EndUser.findByPk(
+    const endUser = await EndUser.findByPk(
       (req as any).endUserSession.endUser.reference
-    )) as any
+    )
     if (!endUser) {
+      res.status(400).json({ error: 'invalid account' })
+      return
+    }
+    if (!endUser.hashedPassword) {
       res.status(400).json({ error: 'invalid account' })
       return
     }

@@ -21,14 +21,14 @@ export const signinEndUser = async (endUser: any) => {
     const endUserSession = await EndUserSession.create(
       {
         endUserReference: endUser.reference,
-        createTime: new Date().toISOString(),
+        createTime: new Date(),
         isActive: true,
       },
       { transaction: t }
     )
     return endUserSession
   })
-  return endUserSession as any
+  return endUserSession
 }
 
 /*
@@ -74,7 +74,7 @@ export const createGoogleOAuthUserIfNotExist = async (profile: any) => {
           emailAddress: profile.email,
           isEmailAddressVerified: true,
           name: profile.name,
-          createTime: new Date().toISOString(),
+          createTime: new Date(),
         },
         { transaction: t }
       )
@@ -142,7 +142,7 @@ export const createFacebookOAuthUserIfNotExist = async (profile: any) => {
           emailAddress: profile.email,
           isEmailAddressVerified: true,
           name: profile.name,
-          createTime: new Date().toISOString(),
+          createTime: new Date(),
         },
         { transaction: t }
       )

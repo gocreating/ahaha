@@ -1,8 +1,57 @@
 import sequelize from '@/db/sequelize'
-import { DataTypes } from 'sequelize'
+import {
+  DataTypes,
+  ForeignKey,
+  InferAttributes,
+  InferCreationAttributes,
+  Model,
+  NonAttribute,
+} from 'sequelize'
 
-export const EndUser = sequelize.define(
-  'EndUser',
+export class EndUser extends Model<
+  InferAttributes<EndUser, { omit: 'googleOauthUsers' | 'facebookOauthUsers' }>,
+  InferCreationAttributes<EndUser>
+> {
+  declare reference?: string
+  declare name?: string
+  declare emailAddress: string
+  declare isEmailAddressVerified: boolean
+  declare hashedPassword?: string
+  declare createTime: Date
+  declare googleOauthUsers?: NonAttribute<GoogleOAuthUser[]>
+  declare facebookOauthUsers?: NonAttribute<FacebookOAuthUser[]>
+}
+
+export class EndUserSession extends Model<
+  InferAttributes<EndUserSession, { omit: 'endUser' }>,
+  InferCreationAttributes<EndUserSession>
+> {
+  declare reference?: string
+  declare isActive: boolean
+  declare createTime: Date
+  declare endUserReference: ForeignKey<string>
+  declare endUser?: NonAttribute<EndUser>
+}
+
+export class GoogleOAuthUser extends Model<
+  InferAttributes<GoogleOAuthUser>,
+  InferCreationAttributes<GoogleOAuthUser>
+> {
+  declare reference?: string
+  declare profile: object
+  declare endUserReference: ForeignKey<string>
+}
+
+export class FacebookOAuthUser extends Model<
+  InferAttributes<FacebookOAuthUser>,
+  InferCreationAttributes<FacebookOAuthUser>
+> {
+  declare reference?: string
+  declare profile: object
+  declare endUserReference: ForeignKey<string>
+}
+
+EndUser.init(
   {
     reference: {
       field: 'reference',
@@ -12,11 +61,11 @@ export const EndUser = sequelize.define(
     },
     name: {
       field: 'name',
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
     emailAddress: {
       field: 'email_address',
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false,
     },
     isEmailAddressVerified: {
@@ -26,7 +75,7 @@ export const EndUser = sequelize.define(
     },
     hashedPassword: {
       field: 'hashed_password',
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
     },
     createTime: {
       field: 'create_time',
@@ -35,14 +84,14 @@ export const EndUser = sequelize.define(
     },
   },
   {
+    sequelize,
     freezeTableName: true,
     tableName: 'end_user',
     timestamps: false,
   }
 )
 
-export const EndUserSession = sequelize.define(
-  'EndUserSession',
+EndUserSession.init(
   {
     reference: {
       field: 'reference',
@@ -67,14 +116,14 @@ export const EndUserSession = sequelize.define(
     },
   },
   {
+    sequelize,
     freezeTableName: true,
     tableName: 'end_user_session',
     timestamps: false,
   }
 )
 
-export const GoogleOAuthUser = sequelize.define(
-  'GoogleOAuthUser',
+GoogleOAuthUser.init(
   {
     reference: {
       field: 'reference',
@@ -93,14 +142,14 @@ export const GoogleOAuthUser = sequelize.define(
     },
   },
   {
+    sequelize,
     freezeTableName: true,
     tableName: 'google_oauth_user',
     timestamps: false,
   }
 )
 
-export const FacebookOAuthUser = sequelize.define(
-  'FacebookOAuthUser',
+FacebookOAuthUser.init(
   {
     reference: {
       field: 'reference',
@@ -119,6 +168,7 @@ export const FacebookOAuthUser = sequelize.define(
     },
   },
   {
+    sequelize,
     freezeTableName: true,
     tableName: 'facebook_oauth_user',
     timestamps: false,
