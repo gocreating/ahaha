@@ -13,7 +13,7 @@ import { NextApiRequest, NextApiResponse } from 'next'
  */
 export default withMethodRequired(['GET', 'PATCH'])(
   withEndUserSession(async (req: NextApiRequest, res: NextApiResponse) => {
-    const endUser = (req as any).endUserSession.endUser
+    const { endUser } = (req as any).endUserSession
     if (req.method === 'GET') {
       res.status(200).json({ data: endUser })
     } else if (req.method === 'PATCH') {
