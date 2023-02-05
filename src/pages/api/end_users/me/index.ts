@@ -7,9 +7,43 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *   get:
  *     tags:
  *       - end_user
+ *     summary: Get profile of current logged in end user
+ *     responses:
+ *       '200':
+ *          content:
+ *            application/json:
+ *              schema:
+ *                type: object
+ *                properties:
+ *                  data:
+ *                    type: object
+ *                    properties:
+ *                      reference:
+ *                        type: string
+ *                      emailAddress:
+ *                        type: string
+ *                      isEmailAddressVerified:
+ *                        type: boolean
+ *                      name:
+ *                        type: string
  *   patch:
  *     tags:
  *       - end_user
+ *     summary: Update profile of current logged in end user
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       '200':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
  */
 export default withMethodRequired(['GET', 'PATCH'])(
   withEndUserSession(async (req: NextApiRequest, res: NextApiResponse) => {

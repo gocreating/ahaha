@@ -9,6 +9,13 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *   post:
  *     tags:
  *       - auth
+ *     summary: Logout current session
+ *     responses:
+ *       '200':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
  */
 export default withMethodRequired('POST')(
   withEndUserSession(async (req: NextApiRequest, res: NextApiResponse) => {

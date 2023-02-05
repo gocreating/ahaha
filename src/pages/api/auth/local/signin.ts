@@ -13,6 +13,31 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *   post:
  *     tags:
  *       - auth
+ *     summary: Sign in an existing end user
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               emailAddress:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       '400':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       '200':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
  */
 export default withMethodRequired('POST')(
   async (req: NextApiRequest, res: NextApiResponse) => {

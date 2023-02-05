@@ -7,6 +7,10 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *   post:
  *     tags:
  *       - auth
+ *     summary: Initiate OAuth 2.0 authorization code flow with Google
+ *     responses:
+ *       '302':
+ *         description: Redirect to Google's authorization endpoint
  */
 export default withMethodRequired('GET')(
   async (req: NextApiRequest, res: NextApiResponse) => {

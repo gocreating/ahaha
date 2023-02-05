@@ -10,6 +10,31 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *   patch:
  *     tags:
  *       - end_user
+ *     summary: Update password of current logged in end user
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               oldPassword:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *     responses:
+ *       '400':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       '200':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
  */
 export default withMethodRequired('PATCH')(
   withEndUserSession(async (req: NextApiRequest, res: NextApiResponse) => {

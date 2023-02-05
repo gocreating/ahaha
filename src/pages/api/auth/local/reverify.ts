@@ -8,6 +8,21 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *   post:
  *     tags:
  *       - auth
+ *     summary: Manually invoke verification process for current logged in end user
+ *     responses:
+ *       '403':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       '200':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
  */
 export default withMethodRequired('POST')(
   withEndUserSession(async (req: NextApiRequest, res: NextApiResponse) => {

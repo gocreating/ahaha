@@ -11,6 +11,23 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *   get:
  *     tags:
  *       - auth
+ *     summary: The email verification base endpoint
+ *     parameters:
+ *       - in: query
+ *         name: reference
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '400':
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *       '302':
+ *         description: "Redirect to dashboard"
  */
 export default withMethodRequired('GET')(
   async (req: NextApiRequest, res: NextApiResponse) => {

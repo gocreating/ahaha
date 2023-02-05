@@ -14,6 +14,18 @@ import { URLSearchParams } from 'url'
  *   post:
  *     tags:
  *       - auth
+ *     summary: Receive the result of Oauth 2.0 authorization code flow from Facebook
+ *     requestBody:
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               code:
+ *                 type: string
+ *     responses:
+ *       '302':
+ *         description: "Redirect to dashboard"
  */
 export default withMethodRequired('GET')(
   async (req: NextApiRequest, res: NextApiResponse) => {
