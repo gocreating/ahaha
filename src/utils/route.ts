@@ -1,7 +1,7 @@
 import { EndUser, EndUserSession } from '@/db/models'
+import { SESSION_COOKIE_KEY } from '@/utils/constant'
 import cookie from 'cookie'
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next'
-import { SESSION_COOKIE_KEY } from './constant'
 
 export const withMethodRequired =
   (method: string | string[]) =>

@@ -1,4 +1,5 @@
 import PageLayout from '@/components/layouts/PageLayout'
+import { isValidPassword } from '@/utils/validation'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { FieldValues, useForm } from 'react-hook-form'
@@ -32,9 +33,17 @@ export default function Signup() {
         <label>Password:</label>
         <input
           type="password"
-          {...signupForm.register('password', { required: true })}
+          {...signupForm.register('password', {
+            required: true,
+            validate: isValidPassword,
+          })}
         />
-        {signupForm.formState.errors.password && <span>Invalid password</span>}
+        {signupForm.formState.errors.password &&
+          signupForm.formState.errors.password.type === 'validate' && (
+            <span>
+              {signupForm.formState.errors.password.message as string}
+            </span>
+          )}
         <br />
         <input type="submit" value="Signup" />
       </form>

@@ -3,6 +3,7 @@ import { SESSION_COOKIE_KEY } from '@/utils/constant'
 import { setCookie } from '@/utils/cookie'
 import { signinEndUser } from '@/utils/endUser'
 import { withMethodRequired } from '@/utils/route'
+import { isValidPassword } from '@/utils/validation'
 import bcrypt from 'bcrypt'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -15,6 +16,10 @@ import { NextApiRequest, NextApiResponse } from 'next'
  */
 export default withMethodRequired('POST')(
   async (req: NextApiRequest, res: NextApiResponse) => {
+    if (isValidPassword(req.body.password) !== true) {
+      res.status(400).json({ error: 'invalid password format' })
+      return
+    }
     const endUser = await EndUser.findOne({
       where: {
         emailAddress: req.body.emailAddress,

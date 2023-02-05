@@ -2,6 +2,7 @@ import { EndUser } from '@/db/models'
 import sequelize from '@/db/sequelize'
 import sendgrid from '@/notification/sendgrid'
 import { withMethodRequired } from '@/utils/route'
+import { isValidPassword } from '@/utils/validation'
 import bcrypt from 'bcrypt'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -14,8 +15,8 @@ import { NextApiRequest, NextApiResponse } from 'next'
  */
 export default withMethodRequired('POST')(
   async (req: NextApiRequest, res: NextApiResponse) => {
-    if (req.method !== 'POST') {
-      res.status(405)
+    if (isValidPassword(req.body.password) !== true) {
+      res.status(400).json({ error: 'invalid password format' })
       return
     }
     const endUsers = await EndUser.findAll({
