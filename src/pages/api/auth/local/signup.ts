@@ -35,6 +35,7 @@ export default withMethodRequired('POST')(
           emailAddress: req.body.emailAddress,
           isEmailAddressVerified: false,
           hashedPassword,
+          createTime: new Date().toISOString(),
         },
         { transaction: t }
       )

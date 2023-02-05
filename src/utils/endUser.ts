@@ -74,6 +74,7 @@ export const createGoogleOAuthUserIfNotExist = async (profile: any) => {
           emailAddress: profile.email,
           isEmailAddressVerified: true,
           name: profile.name,
+          createTime: new Date().toISOString(),
         },
         { transaction: t }
       )
@@ -141,6 +142,7 @@ export const createFacebookOAuthUserIfNotExist = async (profile: any) => {
           emailAddress: profile.email,
           isEmailAddressVerified: true,
           name: profile.name,
+          createTime: new Date().toISOString(),
         },
         { transaction: t }
       )

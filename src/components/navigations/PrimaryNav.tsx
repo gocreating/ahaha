@@ -10,6 +10,9 @@ export default function PrimaryNav() {
           <Link href="/api-doc">Swagger Doc</Link>
         </li>
         <li>
+          <Link href="/admin">Admin</Link>
+        </li>
+        <li>
           <Link href="/">Landing</Link>
         </li>
         {!endUser && (

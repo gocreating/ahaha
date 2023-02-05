@@ -28,6 +28,11 @@ export const EndUser = sequelize.define(
       field: 'hashed_password',
       type: DataTypes.STRING,
     },
+    createTime: {
+      field: 'create_time',
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
   },
   {
     freezeTableName: true,
