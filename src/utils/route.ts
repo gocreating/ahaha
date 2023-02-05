@@ -17,8 +17,17 @@ export const withMethodRequired =
     await apiRoute(req, res)
   }
 
+export interface NextApiRequestWithEndUserSession extends NextApiRequest {
+  endUserSession: EndUserSession
+}
+
+type NextApiHandlerWithEndUserSession<T = any> = (
+  req: NextApiRequestWithEndUserSession,
+  res: NextApiResponse<T>
+) => unknown | Promise<unknown>
+
 export const withEndUserSession =
-  (apiRoute: NextApiHandler) =>
+  (apiRoute: NextApiHandlerWithEndUserSession) =>
   async (req: NextApiRequest, res: NextApiResponse) => {
     const cookies = cookie.parse(req.headers.cookie || '')
     const accessToken = cookies[SESSION_COOKIE_KEY]
@@ -48,6 +57,7 @@ export const withEndUserSession =
       res.status(401).json({ error: 'not authenticated' })
       return
     }
-    ;(req as any).endUserSession = endUserSession
-    await apiRoute(req, res)
+    const reqWithEndUserSession: NextApiRequestWithEndUserSession =
+      Object.assign(req, { endUserSession })
+    await apiRoute(reqWithEndUserSession, res)
   }

@@ -1,5 +1,9 @@
-import { withEndUserSession, withMethodRequired } from '@/utils/route'
-import { NextApiRequest, NextApiResponse } from 'next'
+import {
+  NextApiRequestWithEndUserSession,
+  withEndUserSession,
+  withMethodRequired,
+} from '@/utils/route'
+import { NextApiResponse } from 'next'
 
 /**
  * @swagger
@@ -46,14 +50,16 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *               type: object
  */
 export default withMethodRequired(['GET', 'PATCH'])(
-  withEndUserSession(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { endUser } = (req as any).endUserSession
-    if (req.method === 'GET') {
-      res.status(200).json({ data: endUser })
-    } else if (req.method === 'PATCH') {
-      endUser.name = req.body.name
-      await endUser.save()
-      res.status(200).json({})
+  withEndUserSession(
+    async (req: NextApiRequestWithEndUserSession, res: NextApiResponse) => {
+      const endUser = req.endUserSession.endUser!
+      if (req.method === 'GET') {
+        res.status(200).json({ data: endUser })
+      } else if (req.method === 'PATCH') {
+        endUser.name = req.body.name
+        await endUser.save()
+        res.status(200).json({})
+      }
     }
-  })
+  )
 )

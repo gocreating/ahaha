@@ -114,7 +114,7 @@ export default withMethodRequired('GET')(
     const profileJson = await profileRes.json()
     const endUser = await createFacebookOAuthUserIfNotExist(profileJson)
     const endUserSession = await signinEndUser(endUser)
-    setCookie(res, SESSION_COOKIE_KEY, endUserSession.reference, {
+    setCookie(res, SESSION_COOKIE_KEY, endUserSession.reference!, {
       path: '/',
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7, // 1 week

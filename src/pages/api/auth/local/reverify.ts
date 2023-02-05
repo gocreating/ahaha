@@ -1,6 +1,10 @@
 import { notifyEndUserWithEmailVerification } from '@/utils/notification'
-import { withEndUserSession, withMethodRequired } from '@/utils/route'
-import { NextApiRequest, NextApiResponse } from 'next'
+import {
+  NextApiRequestWithEndUserSession,
+  withEndUserSession,
+  withMethodRequired,
+} from '@/utils/route'
+import { NextApiResponse } from 'next'
 
 /**
  * @swagger
@@ -25,13 +29,15 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *               type: object
  */
 export default withMethodRequired('POST')(
-  withEndUserSession(async (req: NextApiRequest, res: NextApiResponse) => {
-    const { endUser } = (req as any).endUserSession
-    if (endUser.isEmailAddressVerified) {
-      res.status(403).json({ error: 'Forbidden' })
-      return
+  withEndUserSession(
+    async (req: NextApiRequestWithEndUserSession, res: NextApiResponse) => {
+      const endUser = req.endUserSession.endUser!
+      if (endUser.isEmailAddressVerified) {
+        res.status(403).json({ error: 'Forbidden' })
+        return
+      }
+      await notifyEndUserWithEmailVerification(endUser)
+      res.status(200).json({})
     }
-    await notifyEndUserWithEmailVerification(endUser)
-    res.status(200).json({})
-  })
+  )
 )
