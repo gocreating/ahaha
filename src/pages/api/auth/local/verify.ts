@@ -31,12 +31,14 @@ import { NextApiRequest, NextApiResponse } from 'next'
  */
 export default withMethodRequired('GET')(
   async (req: NextApiRequest, res: NextApiResponse) => {
-    const endUser = await EndUser.findByPk(req.query.reference as string)
+    const endUser = (await EndUser.findByPk(
+      req.query.reference as string
+    )) as any
     if (!endUser) {
       res.status(400).json({ error: 'Malformed verification link' })
       return
     }
-    ;(endUser as any).isEmailAddressVerified = true
+    endUser.isEmailAddressVerified = true
     await endUser.save()
     const endUserSession = await signinEndUser(endUser)
     setCookie(res, SESSION_COOKIE_KEY, endUserSession.reference, {

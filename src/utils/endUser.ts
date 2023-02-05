@@ -65,7 +65,7 @@ export const createGoogleOAuthUserIfNotExist = async (profile: any) => {
     ],
   })
   const endUser = await sequelize.transaction(async (t) => {
-    let endUser
+    let endUser: any
     if (endUsers.length > 0) {
       endUser = endUsers[0]
     } else {
@@ -79,20 +79,20 @@ export const createGoogleOAuthUserIfNotExist = async (profile: any) => {
         { transaction: t }
       )
     }
-    let googleOauthUser = (endUser as any).googleOauthUsers?.[0]
+    let googleOauthUser = endUser.googleOauthUsers?.[0]
     if (!googleOauthUser) {
       googleOauthUser = await GoogleOAuthUser.create(
         {
-          endUserReference: (endUser as any).reference,
+          endUserReference: endUser.reference,
           profile,
         },
         { transaction: t }
       )
     }
-    ;(endUser as any).isEmailAddressVerified = true
+    endUser.isEmailAddressVerified = true
     googleOauthUser.profile = profile
-    if (!(endUser as any).name) {
-      ;(endUser as any).name = googleOauthUser.profile.name
+    if (!endUser.name) {
+      endUser.name = googleOauthUser.profile.name
     }
     return endUser
   })
@@ -133,7 +133,7 @@ export const createFacebookOAuthUserIfNotExist = async (profile: any) => {
     ],
   })
   const endUser = await sequelize.transaction(async (t) => {
-    let endUser
+    let endUser: any
     if (endUsers.length > 0) {
       endUser = endUsers[0]
     } else {
@@ -147,20 +147,20 @@ export const createFacebookOAuthUserIfNotExist = async (profile: any) => {
         { transaction: t }
       )
     }
-    let facebookOauthUser = (endUser as any).facebookOauthUsers?.[0]
+    let facebookOauthUser = endUser.facebookOauthUsers?.[0]
     if (!facebookOauthUser) {
       facebookOauthUser = await FacebookOAuthUser.create(
         {
-          endUserReference: (endUser as any).reference,
+          endUserReference: endUser.reference,
           profile,
         },
         { transaction: t }
       )
     }
-    ;(endUser as any).isEmailAddressVerified = true
+    endUser.isEmailAddressVerified = true
     facebookOauthUser.profile = profile
-    if (!(endUser as any).name) {
-      ;(endUser as any).name = facebookOauthUser.profile.name
+    if (!endUser.name) {
+      endUser.name = facebookOauthUser.profile.name
     }
     return endUser
   })
