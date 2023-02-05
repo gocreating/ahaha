@@ -45,7 +45,11 @@ export default function Signup() {
             </span>
           )}
         <br />
-        <input type="submit" value="Signup" />
+        <input
+          type="submit"
+          value={signupForm.formState.isSubmitting ? 'Signing up...' : 'Signup'}
+          disabled={signupForm.formState.isSubmitting}
+        />
       </form>
       <ul>
         <li>

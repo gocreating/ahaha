@@ -32,11 +32,6 @@ export default function PrimaryNav() {
             <Link href="/dashboard">Dashboard</Link>
           </li>
         )}
-        {endUser && (
-          <li>
-            <Link href="/auth/logout">Logout</Link>
-          </li>
-        )}
       </ul>
       <hr />
     </>

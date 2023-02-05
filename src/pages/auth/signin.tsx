@@ -48,7 +48,11 @@ export default function Signin() {
             </span>
           )}
         <br />
-        <input type="submit" value="Signin" />
+        <input
+          type="submit"
+          value={signinForm.formState.isSubmitting ? 'Signing in...' : 'Signin'}
+          disabled={signinForm.formState.isSubmitting}
+        />
       </form>
       <ul>
         <li>

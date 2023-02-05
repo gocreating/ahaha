@@ -1,5 +1,6 @@
 import AuthPageLayout from '@/components/layouts/AuthPageLayout'
 import { useEndUser } from '@/utils/auth'
+import Link from 'next/link'
 import { useEffect } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 
@@ -32,6 +33,11 @@ export default function Dashboard() {
   return (
     <AuthPageLayout>
       <h1>Profile</h1>
+      <ul>
+        <li>
+          <Link href="/auth/logout">Logout</Link>
+        </li>
+      </ul>
       <form
         onSubmit={updateProfileForm.handleSubmit(onUpdateProfileFormSubmit)}
       >
