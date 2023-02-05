@@ -26,9 +26,10 @@ export const withEndUserSession =
       res.status(401).json({ error: 'not authenticated' })
       return
     }
-    ;(req as any).endUserSession = await EndUserSession.findOne({
+    const endUserSession = await EndUserSession.findOne({
       where: {
         reference: accessToken,
+        isActive: true,
       },
       include: [
         {
@@ -43,5 +44,10 @@ export const withEndUserSession =
         },
       ],
     })
+    if (!endUserSession) {
+      res.status(401).json({ error: 'not authenticated' })
+      return
+    }
+    ;(req as any).endUserSession = endUserSession
     await apiRoute(req, res)
   }

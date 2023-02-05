@@ -1,6 +1,6 @@
 import { SESSION_COOKIE_KEY } from '@/utils/constant'
 import { setCookie } from '@/utils/cookie'
-import { withMethodRequired } from '@/utils/route'
+import { withEndUserSession, withMethodRequired } from '@/utils/route'
 import { NextApiRequest, NextApiResponse } from 'next'
 
 /**
@@ -11,7 +11,10 @@ import { NextApiRequest, NextApiResponse } from 'next'
  *       - auth
  */
 export default withMethodRequired('POST')(
-  async (_req: NextApiRequest, res: NextApiResponse) => {
+  withEndUserSession(async (req: NextApiRequest, res: NextApiResponse) => {
+    const { endUserSession } = req as any
+    endUserSession.isActive = false
+    await endUserSession.save()
     setCookie(res, SESSION_COOKIE_KEY, '', {
       path: '/',
       httpOnly: true,
@@ -20,5 +23,5 @@ export default withMethodRequired('POST')(
       sameSite: 'none',
     })
     res.status(200).json({})
-  }
+  })
 )
