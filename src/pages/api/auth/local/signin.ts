@@ -23,7 +23,6 @@ export default withMethodRequired('POST')(
     const endUser = await EndUser.findOne({
       where: {
         emailAddress: req.body.emailAddress,
-        isEmailAddressVerified: true,
       },
     })
     if (!endUser) {
@@ -38,10 +37,12 @@ export default withMethodRequired('POST')(
       res.status(400).json({ error: 'invalid account' })
     }
     const endUserSession = await signinEndUser(endUser)
-    setCookie(res, SESSION_COOKIE_KEY, (endUserSession as any).reference, {
+    setCookie(res, SESSION_COOKIE_KEY, endUserSession.reference, {
       path: '/',
       httpOnly: true,
       maxAge: 60 * 60 * 24 * 7, // 1 week
+      secure: true,
+      sameSite: 'none',
     })
     res.status(200).json({})
   }

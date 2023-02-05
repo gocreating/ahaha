@@ -34,7 +34,12 @@ export const withEndUserSession =
         {
           model: EndUser,
           as: 'endUser',
-          attributes: ['reference', 'name', 'emailAddress'],
+          attributes: [
+            'reference',
+            'name',
+            'emailAddress',
+            'isEmailAddressVerified',
+          ],
         },
       ],
     })

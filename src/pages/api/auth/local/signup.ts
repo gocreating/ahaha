@@ -1,6 +1,6 @@
 import { EndUser } from '@/db/models'
 import sequelize from '@/db/sequelize'
-import sendgrid from '@/notification/sendgrid'
+import { notifyEndUserWithEmailVerification } from '@/utils/notification'
 import { withMethodRequired } from '@/utils/route'
 import { isValidPassword } from '@/utils/validation'
 import bcrypt from 'bcrypt'
@@ -22,16 +22,15 @@ export default withMethodRequired('POST')(
     const endUsers = await EndUser.findAll({
       where: {
         emailAddress: req.body.emailAddress,
-        isEmailAddressVerified: true,
       },
     })
     if (endUsers.length > 0) {
-      res.status(400).json({ error: 'duplicate email address' })
+      res.status(400).json({ error: 'the email address has been signed up' })
       return
     }
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
-    const user = await sequelize.transaction(async (t) => {
-      const user = await EndUser.create(
+    const endUser = await sequelize.transaction(async (t) => {
+      const endUser = await EndUser.create(
         {
           emailAddress: req.body.emailAddress,
           isEmailAddressVerified: false,
@@ -39,16 +38,9 @@ export default withMethodRequired('POST')(
         },
         { transaction: t }
       )
-      return user
+      return endUser
     })
-    await sendgrid.send({
-      to: req.body.emailAddress,
-      from: 'no-reply@lation.app',
-      subject: 'Ahaha Email Verification',
-      html: `<a href="${process.env.BASE_URL}/api/auth/local/verify?reference=${
-        (user as any).reference
-      }">Verify this email</a>`,
-    })
+    await notifyEndUserWithEmailVerification(endUser)
     res.status(201).json({})
   }
 )

@@ -6,7 +6,14 @@ export default function Dashboard() {
   return (
     <AuthPageLayout>
       <h1>Dashboard</h1>
-      Hello, {(endUser as any)?.name}
+
+      {endUser?.isEmailAddressVerified ? (
+        <div>Hello, {endUser?.name || 'Unknown'}</div>
+      ) : (
+        <div>
+          <button>Resend Email Verification</button>
+        </div>
+      )}
     </AuthPageLayout>
   )
 }

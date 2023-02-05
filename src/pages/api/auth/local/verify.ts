@@ -1,4 +1,7 @@
 import { EndUser } from '@/db/models'
+import { SESSION_COOKIE_KEY } from '@/utils/constant'
+import { setCookie } from '@/utils/cookie'
+import { signinEndUser } from '@/utils/endUser'
 import { withMethodRequired } from '@/utils/route'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -18,6 +21,14 @@ export default withMethodRequired('GET')(
     }
     ;(endUser as any).isEmailAddressVerified = true
     await endUser.save()
-    res.redirect(302, `${process.env.BASE_URL}`)
+    const endUserSession = await signinEndUser(endUser)
+    setCookie(res, SESSION_COOKIE_KEY, endUserSession.reference, {
+      path: '/',
+      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 7, // 1 week
+      secure: true,
+      sameSite: 'none',
+    })
+    res.redirect(302, `${process.env.BASE_URL}/dashboard`)
   }
 )

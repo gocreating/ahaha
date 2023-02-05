@@ -28,7 +28,7 @@ export const signinEndUser = async (endUser: any) => {
     )
     return endUserSession
   })
-  return endUserSession
+  return endUserSession as any
 }
 
 /*

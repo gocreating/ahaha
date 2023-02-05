@@ -9,7 +9,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (endUser) {
-      updateProfileForm.setValue('name', (endUser as any).name)
+      updateProfileForm.setValue('name', endUser.name)
     }
   }, [endUser])
 
@@ -35,7 +35,7 @@ export default function Dashboard() {
       <form
         onSubmit={updateProfileForm.handleSubmit(onUpdateProfileFormSubmit)}
       >
-        <label>Email: {(endUser as any)?.emailAddress}</label>
+        <label>Email: {endUser?.emailAddress}</label>
         <br />
         <label>Name:</label>
         <input {...updateProfileForm.register('name')} />

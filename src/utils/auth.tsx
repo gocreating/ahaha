@@ -43,7 +43,7 @@ export const useEndUser = () => {
   return {
     isLoading: endUserContext.isLoading,
     error: endUserContext.error,
-    endUser: endUserContext.endUser,
+    endUser: endUserContext.endUser as any,
     sync: endUserContext.sync,
   }
 }
