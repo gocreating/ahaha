@@ -56,7 +56,13 @@ export const createGoogleOAuthUserIfNotExist = async (profile: any) => {
       emailAddress: profile.email,
       isEmailAddressVerified: true,
     },
-    include: [GoogleOAuthUser],
+    include: [
+      {
+        model: GoogleOAuthUser,
+        as: 'googleOauthUsers',
+        attributes: ['reference', 'profile'],
+      },
+    ],
   })
   const endUser = await sequelize.transaction(async (t) => {
     let endUser
@@ -72,14 +78,21 @@ export const createGoogleOAuthUserIfNotExist = async (profile: any) => {
         { transaction: t }
       )
     }
-    const googleOauthUser = await GoogleOAuthUser.create(
-      {
-        endUserReference: (endUser as any).reference,
-        profile,
-      },
-      { transaction: t }
-    )
-    await (endUser as any).addGoogleOAuthUser(googleOauthUser)
+    let googleOauthUser = (endUser as any).googleOauthUsers?.[0]
+    if (!googleOauthUser) {
+      googleOauthUser = await GoogleOAuthUser.create(
+        {
+          endUserReference: (endUser as any).reference,
+          profile,
+        },
+        { transaction: t }
+      )
+    }
+    ;(endUser as any).isEmailAddressVerified = true
+    googleOauthUser.profile = profile
+    if (!(endUser as any).name) {
+      ;(endUser as any).name = googleOauthUser.profile.name
+    }
     return endUser
   })
   return endUser
@@ -109,9 +122,14 @@ export const createFacebookOAuthUserIfNotExist = async (profile: any) => {
   const endUsers = await EndUser.findAll({
     where: {
       emailAddress: profile.email,
-      isEmailAddressVerified: true,
     },
-    include: [FacebookOAuthUser],
+    include: [
+      {
+        model: FacebookOAuthUser,
+        as: 'facebookOauthUsers',
+        attributes: ['reference', 'profile'],
+      },
+    ],
   })
   const endUser = await sequelize.transaction(async (t) => {
     let endUser
@@ -127,14 +145,21 @@ export const createFacebookOAuthUserIfNotExist = async (profile: any) => {
         { transaction: t }
       )
     }
-    const facebookOauthUser = await FacebookOAuthUser.create(
-      {
-        endUserReference: (endUser as any).reference,
-        profile,
-      },
-      { transaction: t }
-    )
-    await (endUser as any).addFacebookOAuthUser(facebookOauthUser)
+    let facebookOauthUser = (endUser as any).facebookOauthUsers?.[0]
+    if (!facebookOauthUser) {
+      facebookOauthUser = await FacebookOAuthUser.create(
+        {
+          endUserReference: (endUser as any).reference,
+          profile,
+        },
+        { transaction: t }
+      )
+    }
+    ;(endUser as any).isEmailAddressVerified = true
+    facebookOauthUser.profile = profile
+    if (!(endUser as any).name) {
+      ;(endUser as any).name = facebookOauthUser.profile.name
+    }
     return endUser
   })
   return endUser

@@ -132,8 +132,10 @@ EndUserSession.belongsTo(EndUser, {
 EndUser.hasMany(GoogleOAuthUser, {
   foreignKey: 'endUserReference',
   foreignKeyConstraint: true,
+  as: 'googleOauthUsers',
 })
 EndUser.hasMany(FacebookOAuthUser, {
   foreignKey: 'endUserReference',
   foreignKeyConstraint: true,
+  as: 'facebookOauthUsers',
 })
