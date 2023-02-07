@@ -56,6 +56,7 @@ export default withMethodRequired('GET')(
             'You declined the consent so the auth process has been stopped',
         })}`
       )
+      return
     }
     const accessTokenRes = await fetch(
       `https://graph.facebook.com/v16.0/oauth/access_token?${new URLSearchParams(
@@ -127,6 +128,7 @@ export default withMethodRequired('GET')(
             'You declined the email permission so the auth process has been stopped',
         })}`
       )
+      return
     }
     const endUser = await createFacebookOAuthUserIfNotExist(profileJson)
     const endUserSession = await signinEndUser(endUser)
