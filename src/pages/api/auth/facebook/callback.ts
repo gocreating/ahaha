@@ -25,7 +25,7 @@ import { URLSearchParams } from 'url'
  *                 type: string
  *     responses:
  *       '302':
- *         description: "Redirect to dashboard"
+ *         description: "Redirect to dashboard if required permission are granted"
  */
 export default withMethodRequired('GET')(
   async (req: NextApiRequest, res: NextApiResponse) => {
@@ -48,7 +48,10 @@ export default withMethodRequired('GET')(
       code: 'AQC__-WyzV0TyBj8y4l6S21L62W7IF5_Kajj7aLtsHp6ha_zhyIRWL1GEU8-svh07SpaCcwawuYD-1H7pfJWnptJsbIhu5IFMLnsNC2gJE-7WBi70lUDVKxTDJdRCWC0Cgt7xrm1NxWxxCB5m5aDvKyL7MW-R4uLcO9jLdaOKqa_e4XEH_iN0F4aSuvDaIWBTQ40or-FdcqzzrB0UBNwf6790AuZO9w0ZR-oURShw-8jqzF8Ttz9wJyEg-Y5FSXlZuoTK8QBroEj5e7l8rQEx6VlIpcphZPPzC_Z5KBpUz4rVB9vHEi9aAXXsXjxAcxXMmGW3KPjHPs_DDwsBnAULa4OVUJ8y1YpXKXhP-V3q3RlhQUumP4ElLY-3B1LQHPw0So'
     }
     */
-    const { code } = req.query
+    const { code, error } = req.query
+    if (error) {
+      res.redirect('/')
+    }
     const accessTokenRes = await fetch(
       `https://graph.facebook.com/v16.0/oauth/access_token?${new URLSearchParams(
         {
