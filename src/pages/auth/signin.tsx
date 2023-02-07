@@ -3,19 +3,12 @@ import { useEndUser } from '@/utils/auth'
 import { isValidPassword } from '@/utils/validation'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Signin() {
   const router = useRouter()
   const signinForm = useForm()
   const { sync } = useEndUser()
-
-  useEffect(() => {
-    if (router.query.error) {
-      alert(router.query.error)
-    }
-  }, [router.query.error])
 
   const onSigninFormSubmit = async (data: FieldValues) => {
     const res = await fetch('/api/auth/local/signin', {

@@ -51,7 +51,7 @@ export default withMethodRequired('GET')(
     const { code, error } = req.query
     if (error) {
       res.redirect(
-        `${req.headers.referer || '/'}?${new URLSearchParams({
+        `/?${new URLSearchParams({
           error:
             'You declined the consent so the auth process has been stopped',
         })}`
@@ -123,7 +123,7 @@ export default withMethodRequired('GET')(
     const profileJson = await profileRes.json()
     if (!profileJson.email) {
       res.redirect(
-        `${req.headers.referer || '/'}?${new URLSearchParams({
+        `/?${new URLSearchParams({
           error:
             'You declined the email permission so the auth process has been stopped',
         })}`
