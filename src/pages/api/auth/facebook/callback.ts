@@ -107,10 +107,21 @@ export default withMethodRequired('GET')(
         verifyTokenJson.data.user_id
       }?${new URLSearchParams({
         access_token: data.access_token,
-        fields: ['public_profile', 'email'].join(','),
+        fields: [
+          'id',
+          'first_name',
+          'last_name',
+          'middle_name',
+          'name',
+          'name_format',
+          'picture',
+          'short_name',
+          'email',
+        ].join(','),
       })}`
     )
     const profileJson = await profileRes.json()
+    console.log('profileJson', profileJson)
     if (!profileJson.email) {
       res.redirect(
         `/?${new URLSearchParams({
