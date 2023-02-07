@@ -8,6 +8,13 @@ export default function Landing() {
   useEffect(() => {
     if (router.query.error) {
       alert(router.query.error)
+      router.push(
+        {
+          query: {},
+        },
+        undefined,
+        { shallow: true }
+      )
     }
   }, [router.query.error])
 

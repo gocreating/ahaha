@@ -102,6 +102,7 @@ export default withMethodRequired('GET')(
     }
     */
 
+    // See: https://developers.facebook.com/docs/graph-api/reference/user/
     const profileRes = await fetch(
       `https://graph.facebook.com/v16.0/${
         verifyTokenJson.data.user_id
