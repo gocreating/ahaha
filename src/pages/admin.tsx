@@ -6,7 +6,7 @@ export default function Admin() {
       <details>
         <summary>Hello, testers from Aha:</summary>
         <p>
-          If you don't have permissions to see the admin dashboard, I've sent
+          If you do not have permissions to see the admin dashboard, I had sent
           you an email to request emails to grant to. Or if you have better
           options, please let me know.
           <br />
