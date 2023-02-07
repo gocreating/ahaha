@@ -109,13 +109,13 @@ export default withMethodRequired('GET')(
         access_token: data.access_token,
         fields: [
           'id',
-          'first_name',
-          'last_name',
-          'middle_name',
+          // 'first_name',
+          // 'last_name',
+          // 'middle_name',
           'name',
-          'name_format',
+          // 'name_format',
           'picture',
-          'short_name',
+          // 'short_name',
           'email',
         ].join(','),
       })}`
