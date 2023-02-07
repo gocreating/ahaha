@@ -122,7 +122,6 @@ export default withMethodRequired('GET')(
       })}`
     )
     const profileJson = await profileRes.json()
-    console.log('profileJson', profileJson)
     if (!profileJson.email) {
       res.redirect(
         `/?${new URLSearchParams({
