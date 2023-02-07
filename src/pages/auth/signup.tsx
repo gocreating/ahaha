@@ -2,11 +2,19 @@ import PageLayout from '@/components/layouts/PageLayout'
 import { isValidPassword } from '@/utils/validation'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { useEffect } from 'react'
 import { FieldValues, useForm } from 'react-hook-form'
 
 export default function Signup() {
   const router = useRouter()
   const signupForm = useForm()
+
+  useEffect(() => {
+    if (router.query.error) {
+      alert(router.query.error)
+    }
+  }, [router.query.error])
+
   const onSignupFormSubmit = async (data: FieldValues) => {
     const res = await fetch('/api/auth/local/signup', {
       method: 'POST',

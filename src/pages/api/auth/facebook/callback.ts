@@ -50,7 +50,12 @@ export default withMethodRequired('GET')(
     */
     const { code, error } = req.query
     if (error) {
-      res.redirect('/')
+      res.redirect(
+        `${req.headers.referer || '/'}?${new URLSearchParams({
+          error:
+            'You declined the consent so the auth process has been stopped',
+        })}`
+      )
     }
     const accessTokenRes = await fetch(
       `https://graph.facebook.com/v16.0/oauth/access_token?${new URLSearchParams(
@@ -115,6 +120,14 @@ export default withMethodRequired('GET')(
       })}`
     )
     const profileJson = await profileRes.json()
+    if (!profileJson.email) {
+      res.redirect(
+        `${req.headers.referer || '/'}?${new URLSearchParams({
+          error:
+            'You declined the email permission so the auth process has been stopped',
+        })}`
+      )
+    }
     const endUser = await createFacebookOAuthUserIfNotExist(profileJson)
     const endUserSession = await signinEndUser(endUser)
     setCookie(res, SESSION_COOKIE_KEY, endUserSession.reference!, {
